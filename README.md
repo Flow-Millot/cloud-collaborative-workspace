@@ -16,6 +16,7 @@ A production-ready, locally deployable collaborative workspace stack featuring *
     git clone <repository-url>
     cd cloud-collaborative-workspace
     ```
+    > **⚠️ Important:** Do not rename the project folder (`cloud-collaborative-workspace`). The Docker network configuration relies on this specific folder name.
 
 2.  **Start the Stack**
     ```bash
@@ -30,7 +31,7 @@ A production-ready, locally deployable collaborative workspace stack featuring *
     Wait until you see "Nextcloud was successfully installed".
 
 4.  **Configure Integrations**
-    Run the initialization script to set up Single Sign-On (SSO) and OnlyOffice integration:
+    Run the initialization script to set up Single Sign-On (SSO) and OnlyOffice integration. This script is safe to run multiple times if needed.
     ```bash
     bash init-config.sh
     ```
