@@ -1,0 +1,19 @@
+{
+  "realm": "association",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "nextcloud",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "change_me_client_secret",
+      "redirectUris": [
+        "https://cloud.localhost/*"
+      ],
+      "webOrigins": [
+        "https://cloud.localhost"
+      ],
+      "protocol": "openid-connect"
+    }
+  ]
+}
