@@ -62,7 +62,7 @@ services:
 
   # --- Keycloak (Fournisseur OpenID) ---
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:24.0
     command: start-dev # Mode dev pour simplifier (pas de HTTPS requis pour keycloak lui-même)
     environment:
       - KEYCLOAK_ADMIN=admin
