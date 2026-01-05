@@ -1,7 +1,23 @@
 version: '3.8'
 
 services:
-  # --- Base de données pour Nextcloud ---
+  # --- LE NOEUD CENTRAL : REVERSE PROXY NGINX ---
+  proxy:
+    image: nginx:alpine
+    container_name: proxy
+    restart: always
+    ports:
+      - "80:80" # SEUL PORT OUVERT
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+      - keycloak
+      - onlyoffice
+    networks:
+      - cloud-network
+
+  # --- Base de données ---
   db:
     image: mariadb:10.6
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
@@ -16,7 +32,7 @@ services:
     networks:
       - cloud-network
 
-  # --- Cache pour la performance ---
+  # --- Cache ---
   redis:
     image: redis:alpine
     restart: always
@@ -27,8 +43,8 @@ services:
   app:
     image: nextcloud:latest
     restart: always
-    ports:
-      - "80:80"
+    expose: # Expose le port 80 uniquement au réseau interne Docker
+      - "80"
     volumes:
       - nextcloud_data:/var/www/html
     environment:
@@ -37,22 +53,23 @@ services:
       - MYSQL_USER=nextcloud
       - MYSQL_HOST=db
       - REDIS_HOST=redis
-      # Configuration pour faire confiance à OnlyOffice et Keycloak
-      - OVERWRITEPROTOCOL=http
+      # CONFIG PROXY IMPORTANTES
+      - OVERWRITEHOST=k2vm-128.mde.epf.fr
+      - OVERWRITEPROTOCOL=https
+      - TRUSTED_PROXIES=172.16.0.0/12       # Fait confiance au réseau Docker
     depends_on:
       - db
       - redis
     networks:
       - cloud-network
 
-  # --- OnlyOffice Document Server ---
+  # --- OnlyOffice ---
   onlyoffice:
     image: onlyoffice/documentserver
     restart: always
-    ports:
-      - "8081:80"
+    expose:
+      - "80"
     environment:
-      # IMPORTANT : Secret pour sécuriser la com entre Nextcloud et OnlyOffice
       - JWT_ENABLED=true
       - JWT_SECRET=mon_super_secret_jwt
     volumes:
@@ -60,22 +77,23 @@ services:
     networks:
       - cloud-network
 
-  # --- Keycloak (Version 20 : Compatible CPU ancien + Accessible sur Quay) ---
+  # --- Keycloak (Version 20) ---
   keycloak:
     image: quay.io/keycloak/keycloak:20.0.3
     command: start-dev
     restart: always
+    expose:
+      - "8082"
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KC_HTTP_PORT=8082
-      - KC_HOSTNAME=http://localhost:8082
+      # CONFIGURATION CHEMIN RELATIF
+      - KC_HTTP_RELATIVE_PATH=/auth
+      - KC_PROXY=edge  # Dit à Keycloak qu'il est derrière un proxy
       - KC_HOSTNAME_STRICT=false
       - KC_HTTP_ENABLED=true
-      # Cette variable aide parfois sur les vieux CPU
       - JAVA_OPTS_APPEND=-Djava.security.egd=file:/dev/./urandom
-    ports:
-      - "8082:8082"
     volumes:
       - keycloak_data:/opt/keycloak/data/
     networks:
