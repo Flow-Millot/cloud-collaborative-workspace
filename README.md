@@ -173,9 +173,9 @@ Pour éviter de surcharger le serveur et atteindre la limite de stockage.
 
 ## Dépannage Courant
 
-* **Erreur 502 Bad Gateway sur Keycloak** :
-* *Cause* : Les en-têtes HTTP de Keycloak sont trop gros pour Nginx par défaut.
-* *Solution* : Le fichier `nginx.conf` fourni contient déjà `proxy_buffer_size 128k;` et `large_client_header_buffers` pour régler ça.
+* **Erreur 502 Bad Gateway sur Keycloak lors d'une connexion** :
+* *Cause* : Le cache conserve de mauvaise information.
+* *Solution* : Supprimer le cache et les cookies, puis recharger la page sur l'interface de connexion NextCloud.
 
 
 * **Erreur 404 ou "Page blanche" sur OnlyOffice** :
