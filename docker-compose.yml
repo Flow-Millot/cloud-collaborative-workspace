@@ -20,6 +20,7 @@ services:
   # --- Base de données ---
   db:
     image: mariadb:10.6
+    container_name: db
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: always
     volumes:
@@ -35,6 +36,7 @@ services:
   # --- Cache ---
   redis:
     image: redis:alpine
+    container_name: redis
     restart: always
     networks:
       - cloud-network
@@ -42,6 +44,7 @@ services:
   # --- Application Nextcloud ---
   app:
     image: nextcloud:latest
+    container_name: app
     restart: always
     expose: # Expose le port 80 uniquement au réseau interne Docker
       - "80"
@@ -66,6 +69,7 @@ services:
   # --- OnlyOffice ---
   onlyoffice:
     image: onlyoffice/documentserver
+    container_name: onlyoffice
     restart: always
     expose:
       - "80"
@@ -80,6 +84,7 @@ services:
   # --- Keycloak (Version 20) ---
   keycloak:
     image: quay.io/keycloak/keycloak:20.0.3
+    container_name: keycloak
     command: start-dev
     restart: always
     expose:
