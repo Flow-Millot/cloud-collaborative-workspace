@@ -132,7 +132,7 @@ Keycloak gère les utilisateurs. Nextcloud déléguera l'authentification à Key
 - Adresse du ONLYOFFICE Docs : `https://k2vm-128.mde.epf.fr/`
 - Clé secrète : `mon_super_secret_jwt`défini dans le docker compose
 - Adresse du ONLYOFFICE Docs pour les demandes internes du serveur : `http://onlyoffice/`
-- Adresse du serveur pour les demandes internes du ONLYOFFICE Docs : `http://app/``
+- Adresse du serveur pour les demandes internes du ONLYOFFICE Docs : `http://app/`
 - Cliquer sur **Enregistrer**
 
 En dessous, cochez les types de fichiers voulus et enregistrer.
