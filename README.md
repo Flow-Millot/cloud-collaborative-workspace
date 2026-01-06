@@ -89,7 +89,6 @@ Keycloak gère les utilisateurs. Nextcloud déléguera l'authentification à Key
 * **Web origins** : `+`
 * Cliquez sur **Save**.
 
-
 6. Dans l'onglet **Credentials** : Copiez le **Client Secret**.
 
 ### Étape C : Créer des utilisateurs
@@ -97,6 +96,19 @@ Keycloak gère les utilisateurs. Nextcloud déléguera l'authentification à Key
 1. Menu **Users** > **Add user**.
 2. Créez un utilisateur (ex: `etudiant1`). **Email obligatoire** (ex: `etudiant1@epf.fr`) et cochez **Email verified: On**.
 3. Onglet **Credentials** > **Set password** (décochez "Temporary").
+
+### Étape D : Activer la création de compte pour les nouveaux utilisateurs
+
+Cela permet d'ajouter un lien "S'inscrire" sur la page de connexion Keycloak. L'utilisateur remplit lui-même son nom, prénom, email et mot de passe. Une fois validé, il est automatiquement créé dans Keycloak et pourra se connecter à Nextcloud (où il sera ajouté au groupe par défaut).
+
+1. Assurez-vous d'être bien sur votre royaume NextcloudRealm (en haut à gauche) et pas sur Master.
+2. Dans le menu de gauche, cliquez sur Realm settings.
+3. Allez dans l'onglet Login.
+4. Activez l'option User registration (Inscription utilisateur) -> ON.
+
+*Conseil : Profitez-en pour activer aussi Forgot password (Mot de passe oublié) -> ON, c'est toujours utile.*
+
+5. Cliquez sur Save (En bas).
 
 ## 4. Lier Nextcloud à Keycloak
 
@@ -146,7 +158,18 @@ Par défaut, les utilisateurs ont des fichiers privés. Pour travailler ensemble
 3. Créez un dossier (ex: "Projet Commun").
 4. Ajoutez le groupe `users` (ou celui défini dans Social Login) et `admin`.
 5. Donnez les droits **Écriture** et **Partage** et **Supression** si nécessaire.
-6. *Astuce* : Dans la config Social Login, assignez le "Default group" à ce groupe pour que tout nouvel utilisateur Keycloak y ait accès automatiquement.
+6. Mettez un quota global pour le dossier partagé.
+7. *Astuce* : Dans la config Social Login, assignez le "Default group" à ce groupe pour que tout nouvel utilisateur Keycloak y ait accès automatiquement.
+
+## 7. Ajouter un quota par utilisateur
+
+Pour éviter de surcharger le serveur et atteindre la limite de stockage.
+
+1. Cliquez sur votre avatar (en haut à droite).
+2. Cliquez sur Utilisateurs (dans le menu).
+3. Regardez tout en bas de la colonne de gauche (sous la liste des groupes "Admins", "Users", etc.). Vous verrez un petit bouton Paramètres (une roue dentée ⚙️). Cliquez dessus.
+4. C'est ici que vous trouverez le champ Quota par défaut.
+5. Entrez la valeur souhaitée (ex: 5 GB) et cela s'appliquera automatiquement à tous les nouveaux utilisateurs créés.
 
 ## Dépannage Courant
 
