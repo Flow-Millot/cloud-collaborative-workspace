@@ -50,6 +50,7 @@ services:
       - "80"
     volumes:
       - nextcloud_data:/var/www/html
+      - ./s3.config.php:/var/www/html/config/storage.config.php
     environment:
       - MYSQL_PASSWORD=dbpassword
       - MYSQL_DATABASE=nextcloud
